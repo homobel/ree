@@ -225,6 +225,88 @@ function ReeArray() {
 
 	this.arr = new function() {
 
+		// forEachInvert
+
+		function forEachInvert(arr, fn, thisObj) {
+			for(var i = arr.length; i--; ) {
+				if(i in arr) {
+					fn.call(thisObj, arr[i], i, arr);
+				}
+			}
+		}
+
+		this.forEachInvert = forEachInvert;
+
+		// copy
+
+		function copy(arr) {
+			return arr.slice(0);
+		};
+
+		this.copy = copy;
+
+		// del
+
+		function del(arr, n) {
+			if(n in arr) {
+				arr.splice(n, 1);
+			}
+			return arr;
+		}
+
+		this.del = del;
+
+		// delByVal
+
+		function delByVal(arr, value) {
+			del(arr, indexOf(arr, value));
+			return arr;
+		}
+
+		this.delByVal = delByVal;
+
+		// linear
+
+		function linear(arr) {
+			var M = [];
+			function linear(m) {
+				if(m instanceof Array) {
+					each(m, linear);
+				}
+				else {
+					M.push(m);
+				}
+			}
+
+			linear(arr);
+			return M;
+		}
+
+		this.linear = linear;
+
+		// pushOnce
+
+		function pushOnce(arr, n) {
+			var index = indexOf(arr, n);
+			if(!~index) {
+				arr.push(n);
+				return arr.length - 1;
+			}
+			return index;
+		}
+
+		this.pushOnce = pushOnce;
+
+		// last
+
+		function last(arr) {
+			return arr[arr.length - 1];
+		}
+
+		this.last = last;
+
+/* --------------------------------------------------------------------------- */
+
 		// indexOf
 
 		function indexOf(arr, object, flag) {
