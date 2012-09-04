@@ -12,7 +12,7 @@ function ReeArray() {
 
 		// forEachInvert
 
-		function forEachInvert(arr, fn, thisObj) {
+		function eachInvert(arr, fn, thisObj) {
 			for(var i = arr.length; i--; ) {
 				if(i in arr) {
 					fn.call(thisObj, arr[i], i, arr);
@@ -20,7 +20,7 @@ function ReeArray() {
 			}
 		}
 
-		this.forEachInvert = forEachInvert;
+		this.eachInvert = eachInvert;
 
 		// copy
 
@@ -120,7 +120,7 @@ function ReeArray() {
 		function each(arr, fn, thisObj) {
 			for(var i = 0, l = arr.length; i < l; i++) {
 				if(i in arr) {
-					if(fn.call(thisObj, arr[i], i, this)) {
+					if(fn.call(thisObj, arr[i], i, arr)) {
 						break;
 					}
 				}
