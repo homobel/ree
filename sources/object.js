@@ -8,6 +8,16 @@ function ReeObject() {
 
 	this.obj = new function() {
 
+		function propOfVal(obj, val, identityFlag) {
+			for(var prop in obj) {
+				if(obj.hasOwnProperty(prop) && ((identityFlag && obj[name] === val) || obj[name] == val)) {
+					return name;
+				}
+			}
+		}
+
+		this.propOfVal = propOfVal;
+
 		// each
 
 		function each(obj, fn, thisObj) {

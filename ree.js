@@ -123,6 +123,16 @@ function ReeObject() {
 
 	this.obj = new function() {
 
+		function propOfVal(obj, val, identityFlag) {
+			for(var prop in obj) {
+				if(obj.hasOwnProperty(prop) && ((identityFlag && obj[name] === val) || obj[name] == val)) {
+					return name;
+				}
+			}
+		}
+
+		this.propOfVal = propOfVal;
+
 		// each
 
 		function each(obj, fn, thisObj) {
@@ -305,6 +315,27 @@ function ReeArray() {
 
 		this.last = last;
 
+		// append
+
+		function append(arr) {
+			for(var i = 1, l = arguments.length; i < l; i++) {
+				arr.push(arguments[i]);
+			}
+			return arr;
+		}
+
+		this.append = append;
+
+		// prepend
+
+		function prepend(arr) {
+			var args = Array.prototype.slice.call(arguments, 1);
+			Array.prototype.unshift.apply(arr, args);
+			return arr;
+		}
+
+		this.prepend = prepend;
+
 /* --------------------------------------------------------------------------- */
 
 		// indexOf
@@ -449,6 +480,9 @@ function ReeArray() {
 			}
 		};
 
+		this.push = function(arr, obj) {
+			return arr.push(obj);
+		};
 
 	};
 
@@ -606,6 +640,19 @@ function ReeString() {
 		this.rtrim = function(str, chars) {
 			chars = chars || '\\s';
 			return str.replace(new RegExp('[' + chars + ']+$', 'g'), '');
+		};
+
+		this.random = function(n) {
+			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+				res = '',
+				n = n ? n : 8,
+				i = 0;
+
+			for(; i < n; i++) {
+				res += chars.charAt(Math.floor(Math.random() * chars.length));
+			}
+
+			return res;
 		};
 
 	};

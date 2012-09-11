@@ -102,6 +102,19 @@ function ReeString() {
 			return str.replace(new RegExp('[' + chars + ']+$', 'g'), '');
 		};
 
+		this.random = function(n) {
+			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+				res = '',
+				n = n ? n : 8,
+				i = 0;
+
+			for(; i < n; i++) {
+				res += chars.charAt(Math.floor(Math.random() * chars.length));
+			}
+
+			return res;
+		};
+
 	};
 
 }

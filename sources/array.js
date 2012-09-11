@@ -4,6 +4,7 @@
 //~	Info: Provide array helpers
 //~ </component>
 
+
 function ReeArray() {
 
 	var parent = this;
@@ -89,6 +90,27 @@ function ReeArray() {
 		}
 
 		this.last = last;
+
+		// append
+
+		function append(arr) {
+			for(var i = 1, l = arguments.length; i < l; i++) {
+				arr.push(arguments[i]);
+			}
+			return arr;
+		}
+
+		this.append = append;
+
+		// prepend
+
+		function prepend(arr) {
+			var args = Array.prototype.slice.call(arguments, 1);
+			Array.prototype.unshift.apply(arr, args);
+			return arr;
+		}
+
+		this.prepend = prepend;
 
 /* --------------------------------------------------------------------------- */
 
@@ -234,6 +256,9 @@ function ReeArray() {
 			}
 		};
 
+		this.push = function(arr, obj) {
+			return arr.push(obj);
+		};
 
 	};
 
