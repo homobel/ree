@@ -88,10 +88,11 @@ function ReeType() {
 
 	}
 
-	Type.variants.forEach(function(c, i) {
-		this[c] = i;
-		this[i] = c;
-	}, getType);
+
+	for(var i = 0, l = Type.variants.length; i < l; i++) {
+		getType[Type.variants[i]] = i;
+		getType[i] = Type.variants[i];
+	}
 
 	this.type = function(something) {
 		return new Type(getType(something), something);

@@ -91,6 +91,14 @@ function ReeArray() {
 
 		this.last = last;
 
+		// last index
+
+		function lastIndex(arr) {
+			return arr.length - 1;
+		}
+
+		this.lastIndex = lastIndex;
+
 		// append
 
 		function append(arr) {
@@ -111,6 +119,12 @@ function ReeArray() {
 		}
 
 		this.prepend = prepend;
+
+		function pop(arr) {
+			return arr.pop();
+		}
+
+		this.pop = pop;
 
 /* --------------------------------------------------------------------------- */
 
@@ -254,10 +268,6 @@ function ReeArray() {
 			else {
 				return toArraySimple(arguments[0]);
 			}
-		};
-
-		this.push = function(arr, obj) {
-			return arr.push(obj);
 		};
 
 	};

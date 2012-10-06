@@ -103,7 +103,48 @@ function ReeObject() {
 		}
 
 		this.extend = extend;
-		
+
+		function innerProp(obj, prop, val) {
+
+			prop = prop.split('.');
+			var pl = prop.length - 1;
+
+			if(val === undefined) {
+				if($.arr.every(prop, function(c, i) {
+					if(typeof obj === 'object' && c in obj) {
+						obj = obj[c];
+						return true;
+					}
+				})) {
+					return obj;
+				}
+			}
+			else {
+				$.arr.each(prop, function(c, i) {
+					if(i === pl) {
+						return obj[c] = val;
+					}
+					else {
+						if(typeof obj[c] !== 'object') {
+							if(innerProp.mode) {
+								obj[c] = {};
+							}
+							else {
+								throw Error('Can\'t redeclare property in strict mode!');
+							}
+						}
+						obj = obj[c];
+					}
+				});
+			}
+		}
+
+		// 0 - on the strict mode
+
+		innerProp.mode = 1;
+
+		this.innerProp = innerProp;
+
 	};
 
 }

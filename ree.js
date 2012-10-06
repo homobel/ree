@@ -13,6 +13,8 @@ this.ree = new function() {
 //~ </component>
 
 
+	var ree = this;
+
 
 //~ <component>
 //~	Name: Type Helper
@@ -103,10 +105,11 @@ function ReeType() {
 
 	}
 
-	Type.variants.forEach(function(c, i) {
-		this[c] = i;
-		this[i] = c;
-	}, getType);
+
+	for(var i = 0, l = Type.variants.length; i < l; i++) {
+		getType[Type.variants[i]] = i;
+		getType[i] = Type.variants[i];
+	}
 
 	this.type = function(something) {
 		return new Type(getType(something), something);
@@ -218,7 +221,48 @@ function ReeObject() {
 		}
 
 		this.extend = extend;
-		
+
+		function innerProp(obj, prop, val) {
+
+			prop = prop.split('.');
+			var pl = prop.length - 1;
+
+			if(val === undefined) {
+				if($.arr.every(prop, function(c, i) {
+					if(typeof obj === 'object' && c in obj) {
+						obj = obj[c];
+						return true;
+					}
+				})) {
+					return obj;
+				}
+			}
+			else {
+				$.arr.each(prop, function(c, i) {
+					if(i === pl) {
+						return obj[c] = val;
+					}
+					else {
+						if(typeof obj[c] !== 'object') {
+							if(innerProp.mode) {
+								obj[c] = {};
+							}
+							else {
+								throw Error('Can\'t redeclare property in strict mode!');
+							}
+						}
+						obj = obj[c];
+					}
+				});
+			}
+		}
+
+		// 0 - on the strict mode
+
+		innerProp.mode = 1;
+
+		this.innerProp = innerProp;
+
 	};
 
 }
@@ -228,6 +272,7 @@ function ReeObject() {
 //~	Name: Yarray
 //~	Info: Provide array helpers
 //~ </component>
+
 
 function ReeArray() {
 
@@ -315,6 +360,14 @@ function ReeArray() {
 
 		this.last = last;
 
+		// last index
+
+		function lastIndex(arr) {
+			return arr.length - 1;
+		}
+
+		this.lastIndex = lastIndex;
+
 		// append
 
 		function append(arr) {
@@ -335,6 +388,12 @@ function ReeArray() {
 		}
 
 		this.prepend = prepend;
+
+		function pop(arr) {
+			return arr.pop();
+		}
+
+		this.pop = pop;
 
 /* --------------------------------------------------------------------------- */
 
@@ -480,10 +539,6 @@ function ReeArray() {
 			}
 		};
 
-		this.push = function(arr, obj) {
-			return arr.push(obj);
-		};
-
 	};
 
 }
@@ -546,39 +601,57 @@ function ReeNumber() {
 
 function ReeString() {
 
-	var parent = this;
-
 	this.str = new function() {
 
-		this.isMail = function(str) {
-			return !!~str.search(/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/);
-		};
+		// is mail
 
-		this.hasWord = function(str, word) {
+		var mailReg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+		function isMail(str) {
+			return !!~str.search(mailReg);
+		}
+
+		this.isMail = isMail;
+
+		// has word
+
+		function hasWord(str, word) {
 			if(str.search('\\b' + word + '\\b') === -1) {
 				return false;
 			}
 			return true;
 		};
 
-		this.camelCase = function(str) {
+		this.hasWord = hasWord;
+
+		// camel case
+
+		function camelCase(str) {
 			return str.replace(/-\D/g, function(match) {
 				return match.charAt(1).toUpperCase();
 			});
 		};
 
-		this.toNumber = function(str) {
+		this.camelCase = camelCase;
+
+		// to number
+
+		function toNumber(str) {
 			return ~str.indexOf('.') ? str.toFloat() :  str.toInt();
 		};
+
+		this.toNumber = toNumber;
+
+		// get colors
 
 		function tenBasedColor(str) {
 			if(str.length === 1) {
 				str += str;
 			}
-			return parent.num.limit(parent.num.toInt(str, 16), 0, 255);
+			return ree.num.limit(ree.num.toInt(str, 16), 0, 255);
 		}
 
-		this.getColors = function(str) {
+		function getColors(str) {
 			var M;
 			if(str.charAt(0) === '#') {
 				if(str.length === 4) {
@@ -588,7 +661,7 @@ function ReeString() {
 					M = str.match(/\w{2}/g);
 				}
 				if(M.length === 3) {
-					M = parent.arr.map(M, tenBasedColor);
+					M = ree.arr.map(M, tenBasedColor);
 				}
 				else {
 					throw Error('Incorrect input string!');
@@ -597,8 +670,8 @@ function ReeString() {
 			else {
 				M = str.match(/\d{1,3}/g);
 				if(M) {
-					M = parent.arr.map(M, function(c) {
-						return parent.num.limit(parent.num.toInt(c), 0, 255);
+					M = ree.arr.map(M, function(c) {
+						return ree.num.limit(ree.num.toInt(c), 0, 255);
 					});
 
 				}
@@ -606,7 +679,11 @@ function ReeString() {
 			return M || [];
 		};
 
-		this.toRgb = function(str) {
+		this.getColors = getColors;
+
+		// to rgb
+
+		function toRgb(str) {
 			var colors = this.getColors(str);
 			if(colors.length === 3) {
 				return 'rgb(' + colors.join(', ') + ')';
@@ -614,11 +691,15 @@ function ReeString() {
 			return false;
 		};
 
-		this.toHex = function(str) {
+		this.toRgb = toRgb;
+
+		// to hex
+
+		function toHex(str) {
 			var colors = this.getColors(str);
 			console.log(colors);
 			if(colors.length === 3) {
-				return '#' + parent.arr.map(colors, function(c) {
+				return '#' + ree.arr.map(colors, function(c) {
 					var color = c.toString(16);
 					return (color.length === 1) ? '0' + color : color;
 				}).join('');
@@ -626,23 +707,39 @@ function ReeString() {
 			return false;
 		};
 
-		this.trim = function(str, chars) {
-			str = parent.str.ltrim(str, chars);
-			str = parent.str.rtrim(str, chars);
+		this.toHex = toHex;
+
+		// trim
+
+		function trim(str, chars) {
+			str = ree.str.ltrim(str, chars);
+			str = ree.str.rtrim(str, chars);
 			return str;
 		};
 
-		this.ltrim = function(str, chars) {
+		this.trim = trim;
+
+		// ltrim
+
+		function ltrim(str, chars) {
 			chars = chars || '\\s';
 			return str.replace(new RegExp('^[' + chars + ']+', 'g'), '');
 		};
 
-		this.rtrim = function(str, chars) {
+		this.ltrim = ltrim;
+
+		// rtrim
+
+		function rtrim(str, chars) {
 			chars = chars || '\\s';
 			return str.replace(new RegExp('[' + chars + ']+$', 'g'), '');
 		};
 
-		this.random = function(n) {
+		this.rtrim = rtrim;
+
+		// random string
+
+		function random(n) {
 			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
 				res = '',
 				n = n ? n : 8,
@@ -655,6 +752,16 @@ function ReeString() {
 			return res;
 		};
 
+		this.random = random;
+
+		// at
+
+		function at(str, i) {
+			return str.charAt(i);
+		}
+
+		this.at = at;
+
 	};
 
 }
@@ -665,10 +772,22 @@ function ReeString() {
 //~	Info: Provide function helpers
 //~ </component>
 
+
 function ReeFunction() {
 
 	this.fn = new function() {
-		
+
+		function defer(fn, delay, context) {
+
+			var args = Array.prototype.slice(arguments, 2);
+
+			return setTimeout(function() {
+				fn.apply(context, args);
+			}, delay);
+		}
+
+		this.defer = defer;
+
 	};
 
 }
