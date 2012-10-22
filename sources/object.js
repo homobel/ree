@@ -1,7 +1,7 @@
 
 //~ <component>
-//~	Name: Yobject
-//~	Info: Provide object helpers
+//~	Name: Object Helper
+//~	Info: Provides object helpers
 //~ </component>
 
 function ReeObject() {

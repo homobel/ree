@@ -1,14 +1,17 @@
 
 //~ <component>
-//~	Name: Ree Lib
+//~	Name: Ree
 //~	Info: Working with embedded types
 //~ </component>
 
-this.ree = new function() {
+
+if(this.ree === undefined) {
+
+	this.ree = new function() {
 
 
 //~ <component>
-//~	Name: Ree Lib init file
+//~	Name: Ree init file
 //~	Info: Working with embedded types
 //~ </component>
 
@@ -118,8 +121,8 @@ function ReeType() {
 
 
 //~ <component>
-//~	Name: Yobject
-//~	Info: Provide object helpers
+//~	Name: Object Helper
+//~	Info: Provides object helpers
 //~ </component>
 
 function ReeObject() {
@@ -269,8 +272,8 @@ function ReeObject() {
 
 
 //~ <component>
-//~	Name: Yarray
-//~	Info: Provide array helpers
+//~	Name: Array Helper
+//~	Info: Provides array helpers
 //~ </component>
 
 
@@ -545,8 +548,8 @@ function ReeArray() {
 
 
 //~ <component>
-//~	Name: Ynumber
-//~	Info: Provide number helpers
+//~	Name: Number Helper
+//~	Info: Provides number helpers
 //~ </component>
 
 function ReeNumber() {
@@ -595,8 +598,8 @@ function ReeNumber() {
 
 
 //~ <component>
-//~	Name: Ystring
-//~	Info: Provide string helpers
+//~	Name: String Helper
+//~	Info: Provides string helpers
 //~ </component>
 
 function ReeString() {
@@ -768,8 +771,8 @@ function ReeString() {
 
 
 //~ <component>
-//~	Name: Yfunction
-//~	Info: Provide function helpers
+//~	Name: Function Helper
+//~	Info: Provides function helpers
 //~ </component>
 
 
@@ -800,4 +803,9 @@ function ReeFunction() {
 	ReeString.call(this);
 	ReeFunction.call(this);
 
-};
+	};
+
+}
+else {
+	throw Error('ree init error -  property already present in ' + this.toString());
+}

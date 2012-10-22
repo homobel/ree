@@ -1,7 +1,7 @@
 
 //~ <component>
-//~	Name: Ystring
-//~	Info: Provide string helpers
+//~	Name: String Helper
+//~	Info: Provides string helpers
 //~ </component>
 
 function ReeString() {

@@ -1,7 +1,7 @@
 
 //~ <component>
-//~	Name: Yfunction
-//~	Info: Provide function helpers
+//~	Name: Function Helper
+//~	Info: Provides function helpers
 //~ </component>
 
 

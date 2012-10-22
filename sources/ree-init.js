@@ -1,6 +1,6 @@
 
 //~ <component>
-//~	Name: Ree Lib init file
+//~	Name: Ree init file
 //~	Info: Working with embedded types
 //~ </component>
 

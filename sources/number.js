@@ -1,7 +1,7 @@
 
 //~ <component>
-//~	Name: Ynumber
-//~	Info: Provide number helpers
+//~	Name: Number Helper
+//~	Info: Provides number helpers
 //~ </component>
 
 function ReeNumber() {

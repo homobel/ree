@@ -1,7 +1,7 @@
 
 //~ <component>
-//~	Name: Yarray
-//~	Info: Provide array helpers
+//~	Name: Array Helper
+//~	Info: Provides array helpers
 //~ </component>
 
 
