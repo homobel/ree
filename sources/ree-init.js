@@ -5,8 +5,6 @@
 //~ </component>
 
 
-	var ree = this;
-
 //~ require: type.js
 //~ require: object.js
 //~ require: array.js

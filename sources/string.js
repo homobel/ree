@@ -47,78 +47,11 @@ function ReeString() {
 
 		this.toNumber = toNumber;
 
-		// get colors
-
-		function tenBasedColor(str) {
-			if(str.length === 1) {
-				str += str;
-			}
-			return ree.num.limit(ree.num.toInt(str, 16), 0, 255);
-		}
-
-		function getColors(str) {
-			var M;
-			if(str.charAt(0) === '#') {
-				if(str.length === 4) {
-					M = str.match(/\w/g);
-				}
-				else {
-					M = str.match(/\w{2}/g);
-				}
-				if(M.length === 3) {
-					M = ree.arr.map(M, tenBasedColor);
-				}
-				else {
-					throw Error('Incorrect input string!');
-				}
-			}
-			else {
-				M = str.match(/\d{1,3}/g);
-				if(M) {
-					M = ree.arr.map(M, function(c) {
-						return ree.num.limit(ree.num.toInt(c), 0, 255);
-					});
-
-				}
-			}
-			return M || [];
-		};
-
-		this.getColors = getColors;
-
-		// to rgb
-
-		function toRgb(str) {
-			var colors = this.getColors(str);
-			if(colors.length === 3) {
-				return 'rgb(' + colors.join(', ') + ')';
-			}
-			return false;
-		};
-
-		this.toRgb = toRgb;
-
-		// to hex
-
-		function toHex(str) {
-			var colors = this.getColors(str);
-			console.log(colors);
-			if(colors.length === 3) {
-				return '#' + ree.arr.map(colors, function(c) {
-					var color = c.toString(16);
-					return (color.length === 1) ? '0' + color : color;
-				}).join('');
-			}
-			return false;
-		};
-
-		this.toHex = toHex;
-
 		// trim
 
 		function trim(str, chars) {
-			str = ree.str.ltrim(str, chars);
-			str = ree.str.rtrim(str, chars);
+			str = ltrim(str, chars);
+			str = rtrim(str, chars);
 			return str;
 		};
 
